@@ -1,6 +1,11 @@
 # TTS Toolkit 🎤
 
+[![npm version](https://badge.fury.io/js/tts-toolkit.svg)](https://badge.fury.io/js/tts-toolkit)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 一个简单易用的文本转语音（TTS）工具包，支持多种语言和语音引擎。
+
+**GitHub:** https://github.com/zhanglinqian/tts-toolkit
 
 ## ✨ 特性
 
