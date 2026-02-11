@@ -1,0 +1,40 @@
+{
+  "name": "tts-toolkit",
+  "version": "1.0.0",
+  "description": "一个简单易用的文本转语音（TTS）工具包，支持多种语言和语音引擎",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "example": "node examples/basic.js"
+  },
+  "keywords": [
+    "tts",
+    "text-to-speech",
+    "voice",
+    "speech",
+    "edge-tts",
+    "openai-tts",
+    "elevenlabs",
+    "chinese",
+    "english",
+    "语音合成"
+  ],
+  "author": "小龙虾 🦞",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xiaolongxia/tts-toolkit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xiaolongxia/tts-toolkit/issues"
+  },
+  "homepage": "https://github.com/xiaolongxia/tts-toolkit#readme",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "node-edge-tts": "^1.2.9"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
