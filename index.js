@@ -29,12 +29,13 @@ class TTS {
       rate: options.rate || 'default',
       pitch: options.pitch || 'default',
       volume: options.volume || 'default',
-      format: options.format || 'audio-24khz-48kbitrate-mono-mp3'
+      format: options.format || 'audio-24khz-48kbitrate-mono-mp3',
+      maxRetries: options.maxRetries || 3
     };
 
     switch (this.provider) {
       case 'edge':
-        await this.edgeTTS(text, outputPath, config);
+        await this.edgeTTS(text, outputPath, config, config.maxRetries);
         break;
       case 'openai':
         await this.openaiTTS(text, outputPath, config);
@@ -49,24 +50,34 @@ class TTS {
 
   /**
    * Edge TTS（免费）
+   * @param {number} maxRetries - 最大重试次数
    */
-  async edgeTTS(text, outputPath, config) {
-    try {
-      const tts = new EdgeTTS({
-        voice: config.voice,
-        lang: config.lang,
-        outputFormat: config.format,
-        rate: config.rate,
-        pitch: config.pitch,
-        volume: config.volume,
-        timeout: 30000
-      });
+  async edgeTTS(text, outputPath, config, maxRetries = 3) {
+    let lastError;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const tts = new EdgeTTS({
+          voice: config.voice,
+          lang: config.lang,
+          outputFormat: config.format,
+          rate: config.rate,
+          pitch: config.pitch,
+          volume: config.volume,
+          timeout: 30000
+        });
 
-      await tts.ttsPromise(text, outputPath);
-      console.log(`✅ TTS成功: ${outputPath}`);
-    } catch (error) {
-      throw new Error(`Edge TTS失败: ${error.message}`);
+        await tts.ttsPromise(text, outputPath);
+        console.log(`✅ TTS成功: ${outputPath}`);
+        return;
+      } catch (error) {
+        lastError = error;
+        if (attempt < maxRetries) {
+          console.log(`⚠️ 重试 ${attempt}/${maxRetries}: ${error.message}`);
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt)); // 指数退避
+        }
+      }
     }
+    throw new Error(`Edge TTS失败（重试${maxRetries}次后）: ${lastError.message}`);
   }
 
   /**
